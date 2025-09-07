@@ -15,8 +15,16 @@ public class Config {
           .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
   /** The host for the message queue service. */
-  public static final String QUEUE_HOST = "localhost";
+  public static final String QUEUE_HOST;
 
   /** The name of the message queue used in the application. */
   public static final String QUEUE_NAME = "order";
+
+  static {
+    String host = System.getenv("QUEUE_HOST");
+    if (host == null || host.isBlank()) {
+      throw new IllegalStateException("Environment variable QUEUE_HOST is not set!");
+    }
+    QUEUE_HOST = host;
+  }
 }
