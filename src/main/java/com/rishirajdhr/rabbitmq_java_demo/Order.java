@@ -26,11 +26,18 @@ public record Order(
 ) {
   @JsonCreator
   public Order(
+      @JsonProperty("order_id") UUID orderID,
       @JsonProperty("customer") String customer,
       @JsonProperty("item") String item,
       @JsonProperty("quantity") int quantity,
-      @JsonProperty("amount") double amount
+      @JsonProperty("amount") double amount,
+      @JsonProperty("created_at") Instant createdAt
   ) {
-    this(UUID.randomUUID(), customer, item, quantity, amount, Instant.now());
+    this.orderID = orderID != null ? orderID : UUID.randomUUID();
+    this.customer = customer;
+    this.item = item;
+    this.quantity = quantity;
+    this.amount = amount;
+    this.createdAt = createdAt != null ? createdAt : Instant.now();
   }
 }
