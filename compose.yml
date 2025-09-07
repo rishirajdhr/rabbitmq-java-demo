@@ -1,0 +1,73 @@
+name: rabbitmq-java-demo
+services:
+  queue:
+    hostname: rabbitmq
+    image: rabbitmq:4-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  consumer-01:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - CONSUMER_ID=1
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderConsumer"]
+
+  consumer-02:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - CONSUMER_ID=2
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderConsumer"]
+
+  consumer-03:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - CONSUMER_ID=3
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderConsumer"]
+
+  producer-01:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderProducer",
+              "--orders", "/app/orders/orders_01.json"]
+
+  producer-02:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderProducer",
+              "--orders", "/app/orders/orders_02.json"]
+
+  producer-03:
+    build: .
+    depends_on:
+      queue:
+        condition: service_healthy
+    environment:
+      - QUEUE_HOST=queue
+    command: ["java", "-cp", "motunui.jar", "com.rishirajdhr.rabbitmq_java_demo.OrderProducer",
+              "--orders", "/app/orders/orders_03.json"]
