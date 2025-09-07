@@ -1,5 +1,8 @@
 package com.rishirajdhr.rabbitmq_java_demo;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -13,5 +16,21 @@ import java.util.UUID;
  * @param amount the total order amount value
  * @param createdAt the order creation timestamp
  */
-public record Order(UUID orderID, String customer, String item, int quantity, double amount,
-                    Instant createdAt) {}
+public record Order(
+    @JsonProperty("order_id") UUID orderID,
+    @JsonProperty("customer") String customer,
+    @JsonProperty("item") String item,
+    @JsonProperty("quantity") int quantity,
+    @JsonProperty("amount") double amount,
+    @JsonProperty("created_at") Instant createdAt
+) {
+  @JsonCreator
+  public Order(
+      @JsonProperty("customer") String customer,
+      @JsonProperty("item") String item,
+      @JsonProperty("quantity") int quantity,
+      @JsonProperty("amount") double amount
+  ) {
+    this(UUID.randomUUID(), customer, item, quantity, amount, Instant.now());
+  }
+}
