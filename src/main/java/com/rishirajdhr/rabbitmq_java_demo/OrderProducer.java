@@ -48,7 +48,7 @@ public class OrderProducer {
 
       channel.queueDeclare(queue, durable, exclusive, autoDelete, arguments);
 
-      ObjectMapper objectMapper = new ObjectMapper();
+      ObjectMapper objectMapper = Config.OBJECT_MAPPER;
       for (Order order : orders) {
         String serializedOrder = objectMapper.writeValueAsString(order);
         channel.basicPublish("", queue, null, serializedOrder.getBytes(StandardCharsets.UTF_8));

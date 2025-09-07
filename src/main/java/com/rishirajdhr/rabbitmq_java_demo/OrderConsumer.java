@@ -31,22 +31,20 @@ public class OrderConsumer {
     DeliverCallback deliverCallback =
         (consumerTag, delivery) -> {
           String serializedOrder = new String(delivery.getBody(), StandardCharsets.UTF_8);
-          System.out.println("Received order");
           try {
             processOrder(serializedOrder);
           } catch (IOException e) {
             throw new RuntimeException(e);
           } finally {
-            System.out.println("Finished processing order");
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
           }
         };
-    boolean autoAck = true;
+    boolean autoAck = false;
     channel.basicConsume(queue, autoAck, deliverCallback, consumerTag -> { });
   }
 
   private static void processOrder(String serializedOrder) throws IOException {
-    ObjectMapper objectMapper = new ObjectMapper();
+    ObjectMapper objectMapper = Config.OBJECT_MAPPER;
     Order order = objectMapper.readValue(serializedOrder, Order.class);
 
     int consumerId = Integer.parseInt(System.getenv("CONSUMER_ID"));
