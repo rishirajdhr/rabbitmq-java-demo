@@ -1,0 +1,5 @@
+[
+  { "customer": "moana", "item": "canoe", "quantity": 2, "amount": 100 },
+  { "customer": "moana", "item": "coconut", "quantity": 5, "amount": 75 },
+  { "customer": "moana", "item": "necklace", "quantity": 1, "amount": 250 }
+]

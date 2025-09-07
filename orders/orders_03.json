@@ -1,0 +1,7 @@
+[
+  { "customer": "hei_hei", "item": "corn", "quantity": 10, "amount": 30 },
+  { "customer": "hei_hei", "item": "grain sack", "quantity": 2, "amount": 80 },
+  { "customer": "hei_hei", "item": "bird cage", "quantity": 3, "amount": 135 },
+  { "customer": "hei_hei", "item": "feathers", "quantity": 20, "amount": 200 },
+  { "customer": "hei_hei", "item": "nest", "quantity": 1, "amount": 60 }
+]
